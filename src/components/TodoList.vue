@@ -2,14 +2,8 @@
     <div>
         <input type="text" class="todo-input" placeholder="Enter New Todo" v-model="newTodo" @keyup.enter="addTodo" />
         <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-            <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
-                <div class="todo-item-left">
-                    <input type="checkbox" v-model="todo.completed"/>
-                    <div class="todo-item-label" :class="{ completed : todo.completed }" v-if="!todo.editing" @dblclick="editTodo(todo)">{{ todo.title }}</div>
-                    <input class="todo-item-edit" type="text" v-model="todo.title" v-else v-focus @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" />
-                </div>
-                <div class="remove-item" @click="removeTodo(index)">&times;</div>
-            </div>
+            <Todo v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index">
+            </Todo>
         </transition-group>
         <div class="extra-container">
             <div>
@@ -51,6 +45,9 @@ import Todo from './Todo.vue'
 
 export default Vue.extend({
   name: 'TodoList',
+  components: {
+      Todo
+  },
   data: () => {
       return {
           newTodo: '', 
